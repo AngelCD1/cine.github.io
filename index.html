@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Una aventura romántica interactiva inspirada en Lilo y Stitch">
+  <title>Una Aventura Romántica con Lilo y Stitch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Animaciones CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    :root {
+      --rosa-principal: #ff6b9e;
+      --rosa-claro: #ffcce0;
+      --rosa-oscuro: #d6336c;
+      --azul-stitch: #4fc3f7;
+      --verde-hawai: #66bb6a;
+      --texto-oscuro: #3e2723;
+      --sombra-suave: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --duracion-transicion: 0.4s;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #fff0f5 0%, #e6f9ff 100%);
+      font-family: 'Quicksand', sans-serif;
+      color: var(--texto-oscuro);
+      text-align: center;
+      padding: 1rem;
+      min-height: 100vh;
+      background-image: url('https://i.pinimg.com/originals/9f/1e/5c/9f1e5c7f0d8a8b8e8e8e8e8e8e8e8e8e.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-blend-mode: overlay;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    h1, h2, h3 {
+      font-family: 'Pacifico', cursive;
+      color: var(--rosa-oscuro);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 0.5rem;
+    }
+    
+    h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      background: linear-gradient(to right, var(--rosa-oscuro), var(--azul-stitch));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0.5rem 0;
+      animation: titlePulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes titlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .subtitle {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      color: var(--rosa-oscuro);
+      margin-bottom: 2rem;
+      font-style: italic;
+      animation: fadeIn 1.5s ease-out;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 25px;
+      padding: clamp(1.5rem, 3vw, 2.5rem);
+      margin: 1.5rem auto;
+      max-width: min(750px, 90%);
+      box-shadow: var(--sombra-suave), 0 10px 25px rgba(214, 51, 108, 0.2);
+      border: 2px solid var(--rosa-claro);
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--duracion-transicion) ease, box-shadow var(--duracion-transicion) ease;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      animation: cardEntrance 0.8s ease-out forwards;
+    }
+    
+    @keyframes cardEntrance {
+      from { 
+        opacity: 0;
+        transform: translateY(50px) rotateX(20deg);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+      }
+    }
+    
+    .card:hover {
+      transform: translateY(-5px) rotateY(5deg);
+      box-shadow: 0 15px 30px rgba(214, 51, 108, 0.3);
+    }
+    
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(to right, var(--rosa-principal), var(--azul-stitch));
+      animation: rainbow 8s linear infinite;
+    }
+    
+    @keyframes rainbow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .question {
+      margin: 2rem 0;
+      position: relative;
+    }
+    
+    .question p {
+      font-size: clamp(1rem, 3vw, 1.1rem);
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+      color: var(--rosa-oscuro);
+    }
+    
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .option {
+      background-color: white;
+      border: 2px solid var(--rosa-claro);
+      border-radius: 12px;
+      padding: 1rem;
+      width: min(90%, 600px);
+      cursor: pointer;
+      transition: all var(--duracion-transicion);
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    
+    .option::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, var(--rosa-principal), var(--azul-stitch));
+      opacity: 0;
+      transition: opacity var(--duracion-transicion);
+      z-index: -1;
+    }
+    
+    .option:hover {
+      transform: translateX(10px) scale(1.02);
+      border-color: var(--azul-stitch);
+      box-shadow: 0 8px 20px rgba(79, 195, 247, 0.3);
+    }
+    
+    .option:hover::before {
+      opacity: 0.1;
+    }
+    
+    .option.selected {
+      background: linear-gradient(to right, var(--rosa-claro), white);
+      border-color: var(--rosa-principal);
+      box-shadow: 0 0 0 3px rgba(255, 107, 158, 0.3);
+      animation: pulse 0.5s ease;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .option.selected::after {
+      content: "✓";
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--rosa-principal);
+      font-weight: bold;
+      animation: bounceIn 0.5s;
+    }
+    
+    @keyframes bounceIn {
+      0% { transform: translateY(-50%) scale(0); }
+      70% { transform: translateY(-50%) scale(1.2); }
+      100% { transform: translateY(-50%) scale(1); }
+    }
+    
+    .option.correct {
+      background-color: #e8f5e9;
+      border-color: var(--verde-hawai);
+      animation: correctAnswer 0.6s ease;
+    }
+    
+    @keyframes correctAnswer {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(5px); }
+      40%, 80% { transform: translateX(-5px); }
+    }
+    
+    .option.incorrect {
+      background-color: #ffebee;
+      border-color: #ef9a9a;
+      animation: shake 0.5s ease;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    
+    button {
+      background: linear-gradient(to right, var(--rosa-principal), var(--azul-stitch));
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: clamp(1rem, 2vw, 1.1rem);
+      margin-top: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(214, 51, 108, 0.4);
+      transition: all var(--duracion-transicion);
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      z-index: 1;
+    }
+    
+    button:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(214, 51, 108, 0.6);
+    }
+    
+    button:active {
+      transform: translateY(1px);
+    }
+    
+    button:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      opacity: 0.7;
+    }
+    
+    button::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, var(--azul-stitch), var(--rosa-principal));
+      opacity: 0;
+      transition: opacity var(--duracion-transicion);
+      z-index: -1;
+    }
+    
+    button:hover::after {
+      opacity: 1;
+    }
+    
+    .hidden {
+      display: none;
+      animation: fadeOut 0.5s ease;
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(20px); }
+    }
+    
+    .visible {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    video {
+      width: min(90%, 600px);
+      border-radius: 20px;
+      box-shadow: var(--sombra-suave);
+      margin: 1.5rem 0;
+      border: 5px solid white;
+      aspect-ratio: 16/9;
+      background: #000;
+      transition: transform var(--duracion-transicion);
+    }
+    
+    video:hover {
+      transform: scale(1.02);
+    }
+    
+    .puzzle-img {
+      width: min(150px, 45vw);
+      height: min(150px, 45vw);
+      object-fit: cover;
+      margin: 5px;
+      border-radius: 15px;
+      cursor: grab;
+      box-shadow: var(--sombra-suave);
+      transition: transform var(--duracion-transicion);
+    }
+    
+    .puzzle-img:hover {
+      transform: scale(1.08);
+      z-index: 10;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+    
+    #puzzle-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: min(420px, 90%);
+      margin: 1.5rem auto;
+      position: relative;
+      min-height: 320px;
+    }
+    
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: var(--rosa-principal);
+      transform: rotate(45deg);
+      animation: float 4s ease-in-out infinite;
+      opacity: 0.7;
+      pointer-events: none;
+      filter: drop-shadow(0 0 5px rgba(214, 51, 108, 0.5));
+    }
+    
+    .heart::before,
+    .heart::after {
+      content: "";
+      width: 20px;
+      height: 20px;
+      background-color: var(--rosa-principal);
+      border-radius: 50%;
+      position: absolute;
+    }
+    
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+    
+    .heart::after {
+      top: 0;
+      left: -10px;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(-20px); }
+    }
+    
+    .flor-hawai {
+      position: absolute;
+      font-size: clamp(1.2rem, 3vw, 1.5rem);
+      color: var(--rosa-oscuro);
+      animation: spin 10s linear infinite, floatFlower 8s ease-in-out infinite;
+      pointer-events: none;
+      filter: drop-shadow(0 0 5px rgba(214, 51, 108, 0.3));
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes floatFlower {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    
+    .final-message {
+      font-size: clamp(1.1rem, 3vw, 1.3rem);
+      line-height: 1.8;
+      margin: 1.5rem 0;
+    }
+    
+    .ticket {
+      background: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin: 2rem auto;
+      max-width: min(400px, 90%);
+      box-shadow: var(--sombra-suave);
+      border: 2px dashed var(--rosa-principal);
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform var(--duracion-transicion);
+    }
+    
+    .ticket:hover {
+      transform: rotateY(10deg) scale(1.03);
+    }
+    
+    .ticket::before, .ticket::after {
+      content: "✂️";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      animation: scissorBounce 1s infinite alternate;
+    }
+    
+    @keyframes scissorBounce {
+      from { transform: translateY(-50%) scale(1); }
+      to { transform: translateY(-50%) scale(1.2); }
+    }
+    
+    .ticket::before {
+      left: -15px;
+    }
+    
+    .ticket::after {
+      right: -15px;
+    }
+    
+    .qr-code {
+      border: 10px solid white;
+      border-radius: 15px;
+      box-shadow: var(--sombra-suave);
+      margin: 1rem auto;
+      transition: transform var(--duracion-transicion);
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .qr-code:hover {
+      transform: scale(1.05);
+      animation: rainbowBorder 3s linear infinite;
+    }
+    
+    @keyframes rainbowBorder {
+      0% { border-color: #ff6b9e; }
+      25% { border-color: #4fc3f7; }
+      50% { border-color: #66bb6a; }
+      75% { border-color: #ffd166; }
+      100% { border-color: #ff6b9e; }
+    }
+    
+    .signature {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.2rem, 3vw, 1.5rem);
+      color: var(--rosa-oscuro);
+      margin-top: 2rem;
+      animation: signatureFadeIn 2s ease-out;
+    }
+    
+    @keyframes signatureFadeIn {
+      from { opacity: 0; transform: translateX(-50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    /* Efectos especiales */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: var(--rosa-principal);
+      opacity: 0;
+      z-index: 1000;
+      pointer-events: none;
+      animation: fall linear forwards;
+    }
+    
+    /* Mejoras de accesibilidad */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+    
+    /* Botón de música */
+    .music-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--rosa-principal);
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 100;
+      transition: all var(--duracion-transicion);
+    }
+    
+    .music-control:hover {
+      transform: scale(1.1);
+      background: var(--rosa-oscuro);
+    }
+    
+    /* Barra de progreso */
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background: var(--rosa-claro);
+      border-radius: 4px;
+      margin: 1rem 0;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, var(--rosa-principal), var(--azul-stitch));
+      width: 0%;
+      transition: width 0.5s ease;
+      border-radius: 4px;
+    }
+    
+    /* Nuevos estilos para juegos adicionales */
+    .memory-game {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 500px;
+      margin: 1.5rem auto;
+    }
+    
+    .memory-card {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--rosa-principal), var(--azul-stitch));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 0.5s;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .memory-card.flipped {
+      transform: rotateY(180deg);
+    }
+    
+    .memory-card img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      position: absolute;
+      backface-visibility: hidden;
+      transform: rotateY(180deg);
+    }
+    
+    .memory-card .back {
+      background: white;
+      border-radius: 8px;
+      width: 80%;
+      height: 80%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--rosa-oscuro);
+    }
+    
+    .memory-card.matched {
+      transform: rotateY(180deg);
+      box-shadow: 0 0 15px var(--verde-hawai);
+    }
+    
+    /* Juego de arrastrar fotos */
+    .photo-drag-game {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin: 1.5rem auto;
+      max-width: 600px;
+    }
+    
+    .photo-option {
+      width: 120px;
+      height: 120px;
+      border-radius: 15px;
+      border: 3px solid var(--rosa-claro);
+      cursor: grab;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    
+    .photo-option:hover {
+      transform: scale(1.05);
+    }
+    
+    .photo-target {
+      width: 150px;
+      height: 150px;
+      border-radius: 15px;
+      border: 3px dashed var(--azul-stitch);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1rem auto;
+      background-color: rgba(255, 255, 255, 0.5);
+      transition: all 0.3s;
+    }
+    
+    .photo-target.highlight {
+      border-color: var(--rosa-principal);
+      background-color: rgba(255, 107, 158, 0.1);
+    }
+    
+    /* Juego de preguntas personales */
+    .love-quiz {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 15px;
+      padding: 1rem;
+      margin: 1rem 0;
+      border: 2px solid var(--rosa-claro);
+    }
+    
+    .love-quiz p {
+      font-weight: bold;
+      color: var(--rosa-oscuro);
+      margin-bottom: 0.5rem;
+    }
+    
+    .love-quiz input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 2px solid var(--rosa-claro);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    
+    /* Optimización para móviles */
+    @media (max-width: 480px) {
+      .card {
+        padding: 1.2rem;
+      }
+      
+      .option {
+        padding: 0.8rem;
+      }
+      
+      button {
+        padding: 0.8rem 1.5rem;
+      }
+      
+      .ticket::before, .ticket::after {
+        display: none;
+      }
+      
+      .music-control {
+        width: 40px;
+        height: 40px;
+        bottom: 15px;
+        right: 15px;
+      }
+      
+      .memory-game {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      
+      .photo-option {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .photo-target {
+        width: 120px;
+        height: 120px;
+      }
+    }
+    
+    /* Animaciones de entrada */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Efecto de onda */
+    .wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23ff6b9e" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%23ff6b9e" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23ff6b9e"/></svg>');
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -1;
+      opacity: 0.7;
+      animation: wave 15s linear infinite;
+    }
+    
+    @keyframes wave {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    
+    /* Efecto de brillo */
+    .glow {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(255,107,158,0.3) 0%, rgba(255,107,158,0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(10px);
+      animation: glowMove 15s infinite alternate;
+    }
+    
+    @keyframes glowMove {
+      0% { transform: translate(10%, 10%); }
+      25% { transform: translate(80%, 30%); }
+      50% { transform: translate(40%, 70%); }
+      75% { transform: translate(70%, 20%); }
+      100% { transform: translate(20%, 60%); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Decoración de corazones y flores -->
+<div id="hearts-container" aria-hidden="true"></div>
+<div id="flowers-container" aria-hidden="true"></div>
+<div class="wave"></div>
+<div class="glow"></div>
+
+<!-- Control de música -->
+<div class="music-control" id="musicControl" aria-label="Control de música">
+  <i class="fas fa-music"></i>
+</div>
+
+<!-- Barra de progreso -->
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<header>
+  <h1>🌺 Una Aventura de Amor con Lilo y Stitch 🌺</h1>
+  <p class="subtitle">"Ohana significa familia, y familia significa que nadie se queda atrás... o se olvida"</p>
+</header>
+
+<main>
+  <!-- Etapa 1 -->
+  <section class="card" id="etapa1">
+    <div class="question">
+      <p><i class="fas fa-heart" aria-hidden="true" style="color: var(--rosa-oscuro); margin-right: 10px;"></i> Mi amor, ¿me acompañarías a una cita especial el 22 de mayo para ver <strong>Lilo y Stitch</strong> juntos? <i class="fas fa-heart" aria-hidden="true" style="color: var(--rosa-oscuro); margin-left: 10px;"></i></p>
+      <p>Pero primero, demuestra que conoces esta hermosa historia tanto como yo te conozco a ti:</p>
+    </div>
+
+    <div class="question">
+      <p>1. ¿Cómo se llama la hermana mayor de Lilo que la cuida con tanto amor?</p>
+      <div class="options-container">
+        <div class="option" onclick="selectOption(this, 'q1', 'nani')" role="button" tabindex="0" aria-label="Opción Nani" onkeydown="handleKeyDown(event, this, 'q1', 'nani')">Nani</div>
+        <div class="option" onclick="selectOption(this, 'q1', 'lilo')" role="button" tabindex="0" aria-label="Opción Lilo" onkeydown="handleKeyDown(event, this, 'q1', 'lilo')">Lilo</div>
+        <div class="option" onclick="selectOption(this, 'q1', 'mertle')" role="button" tabindex="0" aria-label="Opción Mertle" onkeydown="handleKeyDown(event, this, 'q1', 'mertle')">Mertle</div>
+        <div class="option" onclick="selectOption(this, 'q1', 'pleakley')" role="button" tabindex="0" aria-label="Opción Pleakley" onkeydown="handleKeyDown(event, this, 'q1', 'pleakley')">Pleakley</div>
+      </div>
+    </div>
+    
+    <div class="question">
+      <p>2. Stitch es el experimento número... (el dígito favorito de los enamorados)</p>
+      <div class="options-container">
+        <div class="option" onclick="selectOption(this, 'q2', '626')" role="button" tabindex="0" aria-label="Opción 626" onkeydown="handleKeyDown(event, this, 'q2', '626')">626</div>
+        <div class="option" onclick="selectOption(this, 'q2', '999')" role="button" tabindex="0" aria-label="Opción 999" onkeydown="handleKeyDown(event, this, 'q2', '999')">999</div>
+        <div class="option" onclick="selectOption(this, 'q2', '111')" role="button" tabindex="0" aria-label="Opción 111" onkeydown="handleKeyDown(event, this, 'q2', '111')">111</div>
+        <div class="option" onclick="selectOption(this, 'q2', '333')" role="button" tabindex="0" aria-label="Opción 333" onkeydown="handleKeyDown(event, this, 'q2', '333')">333</div>
+      </div>
+    </div>
+    
+    <div class="question">
+      <p>3. ¿En qué paradisíaca isla vive Lilo, donde el amor florece como las flores de hibisco?</p>
+      <div class="options-container">
+        <div class="option" onclick="selectOption(this, 'q3', 'kauai')" role="button" tabindex="0" aria-label="Opción Kauai, Hawaii" onkeydown="handleKeyDown(event, this, 'q3', 'kauai')">Kauai, Hawaii</div>
+        <div class="option" onclick="selectOption(this, 'q3', 'maui')" role="button" tabindex="0" aria-label="Opción Maui, Hawaii" onkeydown="handleKeyDown(event, this, 'q3', 'maui')">Maui, Hawaii</div>
+        <div class="option" onclick="selectOption(this, 'q3', 'bali')" role="button" tabindex="0" aria-label="Opción Bali, Indonesia" onkeydown="handleKeyDown(event, this, 'q3', 'bali')">Bali, Indonesia</div>
+        <div class="option" onclick="selectOption(this, 'q3', 'tahiti')" role="button" tabindex="0" aria-label="Opción Tahití, Polinesia Francesa" onkeydown="handleKeyDown(event, this, 'q3', 'tahiti')">Tahití, Polinesia Francesa</div>
+      </div>
+    </div>
+    
+    <button id="btn-etapa1" disabled onclick="verificarEtapa1()">
+      <i class="fas fa-arrow-right" aria-hidden="true"></i>
+      <span>Continuar nuestra aventura</span>
+    </button>
+  </section>
+
+  <!-- Etapa 2 -->
+  <section class="card hidden" id="etapa2">
+    <p><i class="fas fa-star" aria-hidden="true" style="color: var(--azul-stitch); margin-right: 8px;"></i> ¡Respuestas correctas, mi amor! Eres tan inteligente como dulce.</p>
+    <p>Ahora, observa estas imágenes con atención. Juntas esconden una palabra mágica que representa lo que siento por ti:</p>
+    
+    <div class="image-gallery" style="display: flex; justify-content: center; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap;">
+      <img src="https://i.postimg.cc/HknDNjzw/lilo-and-stitch-01.jpg" alt="Imagen relacionada con Ohana" class="gallery-img" style="width: 120px; height: 120px; object-fit: cover; border-radius: 15px; border: 3px solid var(--rosa-claro); cursor: pointer;" onclick="zoomImage(this)" />
+      <img src="https://i.postimg.cc/1Xv70cLL/lilo-stitch-y-nany-surf.jpg" alt="Imagen relacionada con Ohana" class="gallery-img" style="width: 120px; height: 120px; object-fit: cover; border-radius: 15px; border: 3px solid var(--azul-stitch); cursor: pointer;" onclick="zoomImage(this)" />
+      <img src="https://i.postimg.cc/nL14Qc8W/pp-leroyandstitch-herobanner-20506-5b0622fa.jpg" alt="Imagen relacionada con Ohana" class="gallery-img" style="width: 120px; height: 120px; object-fit: cover; border-radius: 15px; border: 3px solid var(--verde-hawai); cursor: pointer;" onclick="zoomImage(this)" />
+    </div>
+    
+    <div class="question">
+      <p>¿Cuál es esa palabra especial que significa que somos una familia y estaremos juntos para siempre?</p>
+      <div class="options-container">
+        <div class="option" onclick="selectOption(this, 'q4', 'ohana')" role="button" tabindex="0" aria-label="Opción Ohana" onkeydown="handleKeyDown(event, this, 'q4', 'ohana')">Ohana</div>
+        <div class="option" onclick="selectOption(this, 'q4', 'aloha')" role="button" tabindex="0" aria-label="Opción Aloha" onkeydown="handleKeyDown(event, this, 'q4', 'aloha')">Aloha</div>
+        <div class="option" onclick="selectOption(this, 'q4', 'mahalo')" role="button" tabindex="0" aria-label="Opción Mahalo" onkeydown="handleKeyDown(event, this, 'q4', 'mahalo')">Mahalo</div>
+        <div class="option" onclick="selectOption(this, 'q4', 'keiki')" role="button" tabindex="0" aria-label="Opción Keiki" onkeydown="handleKeyDown(event, this, 'q4', 'keiki')">Keiki</div>
+      </div>
+    </div>
+    
+    <button id="btn-etapa2" disabled onclick="verificarEtapa2()">
+      <i class="fas fa-heart" aria-hidden="true"></i>
+      <span>Descubrir más sorpresas</span>
+    </button>
+  </section>
+
+  <!-- Etapa 3 - Juego de Memoria -->
+  <section class="card hidden" id="etapa3">
+    <h2>Juego de Memoria: Nuestros Momentos Especiales</h2>
+    <p>Encuentra todas las parejas de imágenes que representan nuestros momentos especiales juntos:</p>
+    
+    <div class="memory-game" id="memoryGame">
+      <!-- Las cartas se generarán dinámicamente con JavaScript -->
+    </div>
+    
+    <button id="btn-etapa3" disabled onclick="verificarEtapa3()">
+      <i class="fas fa-check" aria-hidden="true"></i>
+      <span>He encontrado todas las parejas</span>
+    </button>
+  </section>
+
+  <!-- Etapa 4 - Juego de Arrastrar Fotos -->
+  <section class="card hidden" id="etapa4">
+    <h2>Ordena Nuestros Recuerdos</h2>
+    <p>Arrastra las fotos de nuestros momentos especiales a la línea de tiempo en el orden correcto:</p>
+    
+    <div class="photo-drag-game">
+      <img src="https://i.postimg.cc/NMs4mdRc/Whats-App-Image-2025-05-09-at-2-27-23-PM.jpg" class="photo-option" draggable="true" alt="Nuestra primera cita en el Barrio Chino" data-order="1">
+      <img src="https://i.postimg.cc/T2L6D00m/Whats-App-Image-2025-05-09-at-2-24-53-PM.jpg" class="photo-option" draggable="true" alt="Nuestro primer beso en el Malecón" data-order="2">
+      <img src="https://i.postimg.cc/8cKNNXmP/Whats-App-Image-2025-05-09-at-2-27-41-PM.jpg" class="photo-option" draggable="true" alt="Noche de boliche" data-order="3">
+      <img src="https://i.postimg.cc/7h7nyjkS/Whats-App-Image-2025-05-09-at-2-27-32-PM.jpg" class="photo-option" draggable="true" alt="Terminamos en un villar" data-order="4">
+    </div>
+    
+    <p>Ordena los recuerdos:</p>
+    <div class="photo-target" id="target1" ondrop="drop(event)" ondragover="allowDrop(event)">1°</div>
+    <div class="photo-target" id="target2" ondrop="drop(event)" ondragover="allowDrop(event)">2°</div>
+    <div class="photo-target" id="target3" ondrop="drop(event)" ondragover="allowDrop(event)">3°</div>
+    <div class="photo-target" id="target4" ondrop="drop(event)" ondragover="allowDrop(event)">4°</div>
+    
+    <button id="btn-etapa4" onclick="verificarEtapa4()">
+      <i class="fas fa-check" aria-hidden="true"></i>
+      <span>Verificar orden</span>
+    </button>
+  </section>
+
+  <<!-- Etapa 5 - Rompecabezas -->
+<section class="card hidden" id="etapa5">
+  <p><i class="fas fa-puzzle-piece" aria-hidden="true" style="color: var(--rosa-oscuro); margin-right: 8px;"></i> ¡Casi llegamos, mi vida! Juntos podemos completar cualquier rompecabezas.</p>
+  <p>Completa este rompecabezas interactivo que revelará una imagen especial de nuestro amor:</p>
+  
+  <!-- Contenedor del rompecabezas de Jigsaw Planet -->
+  <div style="width: 100%; max-width: 600px; margin: 1.5rem auto; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(214, 51, 108, 0.3); background: white; padding: 10px;">
+    <iframe 
+      src="https://www.jigsawplanet.com/?rc=play&amp;pid=1d3657835e25&amp;view=iframe" 
+      style="width:100%; height:500px; border:none; border-radius: 15px;"
+      frameborder="0" 
+      allowfullscreen
+      title="Rompecabezas interactivo de nuestro amor"
+    ></iframe>
+  </div>
+  
+  <div id="puzzle-hint" style="margin-top: 1rem; font-style: italic; color: var(--rosa-oscuro); opacity: 0.8;">
+    Arrastra las piezas para completar el rompecabezas. ¡Cada pieza representa un momento especial nuestro!
+  </div>
+  
+  <button onclick="finalizarRompecabezas()" style="margin-top: 1.5rem;">
+    <i class="fas fa-magic" aria-hidden="true"></i>
+    <span>Continuar con la sorpresa</span>
+  </button>
+</section>
+
+  <!-- Etapa 6 - Quiz Personal -->
+  <section class="card hidden" id="etapa6">
+    <h2>¿Cuánto sabes de nosotros?</h2>
+    <p>Responde estas preguntas sobre nuestros momentos especiales:</p>
+    
+    <div class="love-quiz">
+      <p>1. ¿Dónde fue nuestra primera cita?</p>
+      <input type="text" id="quiz1" placeholder="Escribe tu respuesta...">
+      
+      <p>2. ¿Dónde dimos nuestro primer beso?</p>
+      <input type="text" id="quiz2" placeholder="Escribe tu respuesta...">
+      
+      <p>3. ¿Qué actividad hicimos antes de terminar en un villar?</p>
+      <input type="text" id="quiz3" placeholder="Escribe tu respuesta...">
+    </div>
+    
+    <button onclick="verificarQuizPersonal()">
+      <i class="fas fa-heart" aria-hidden="true"></i>
+      <span>Verificar respuestas</span>
+    </button>
+  </section>
+
+  <!-- Etapa Final -->
+  <section class="card hidden" id="final">
+    <h2>¡Felicidades, amor mío! 🌟</h2>
+    
+    <p class="final-message">
+      Has completado todas las pruebas con éxito, demostrando que nuestro amor es tan fuerte como el de Lilo y Stitch.<br>
+      Después de superar juntos este juego,
+el universo nos tiene un premio:
+
+Una noche de cine donde tú serás la protagonista
+y yo el afortunado que te acompaña.
+
+Guarda estas entradas con cuidado...
+porque marcarán el inicio de nuestro próximo capítulo.:
+    </p>
+    
+   
+  <track kind="captions" src="subtitles.vtt" srclang="es" label="Español" default>
+  Tu navegador no soporta el video de nuestro amor.
+</video>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ytPDW54m8P8?si=nkw9_C1wEaFpRMU3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    
+    <p class="final-message">
+      Y como prometí, aquí está tu entrada para nuestra cita de cine:<br>
+      Guarda este código con cuidado, porque representa nuestro próximo momento especial juntos.
+    </p>
+    
+   <div class="ticket" id="entrada-cine">
+  <h3 style="color: var(--rosa-oscuro); margin-top: 0;">Entrada para: <span style="color: var(--azul-stitch);">Lilo & Stitch</span></h3>
+  <p><i class="fas fa-calendar-alt" aria-hidden="true" style="color: var(--rosa-principal);"></i> <strong>22 de Mayo</strong></p>
+  <p><i class="fas fa-clock" aria-hidden="true" style="color: var(--azul-stitch);"></i> <strong>7:00 PM</strong></p>
+  <p><i class="fas fa-ticket-alt" aria-hidden="true" style="color: var(--verde-hawai);"></i> <strong>Asientos: J 14 y J 15</strong></p>
+  
+  <img src="https://i.postimg.cc/RVysDcm7/Captura-de-pantalla-2025-05-08-201544.png" class="qr-code" alt="Código QR para nuestro cine" width="200" id="qrCode" />
+  
+  <p style="font-style: italic; margin-bottom: 0;">Escaneame para confirmar nuestra cita</p>
+</div>
+
+<!-- Botón para descargar PDF (añade esto donde quieras) -->
+<button onclick="descargarPDF()" style="
+  background: var(--rosa-principal);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  margin: 15px 0;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;">
+  <i class="fas fa-file-pdf"></i> Guardar entrada como recuerdo
+</button>
+
+<p class="final-message" style="font-size: clamp(1.2rem, 3vw, 1.5rem);">
+  <i class="fas fa-heart" aria-hidden="true" style="color: var(--rosa-oscuro);"></i> Te amo más que todas las estrellas del cielo de Hawaii <i class="fas fa-heart" aria-hidden="true" style="color: var(--rosa-oscuro);"></i>
+</p>
+
+<script>
+function descargarPDF() {
+  const elemento = document.getElementById('entrada-cine');
+  const opt = {
+    margin: 10,
+    filename: 'EntradaEspecial_Cine.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
+  };
+  html2pdf().from(elemento).set(opt).save();
+}
+</script>
+
+<!-- Audio elements -->
+<audio id="backgroundMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="correctSound">
+  <source src="https://www.soundjay.com/buttons/sounds/button-09.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="wrongSound">
+  <source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="clickSound">
+  <source src="https://www.soundjay.com/buttons/sounds/button-21.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="confettiSound">
+  <source src="https://www.soundjay.com/human/sounds/applause-8.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  // Variables para almacenar respuestas
+  const respuestas = {
+    q1: null,
+    q2: null,
+    q3: null,
+    q4: null
+  };
+  
+  // Variables para juegos adicionales
+  let memoryCards = [];
+  let hasFlippedCard = false;
+  let lockBoard = false;
+  let firstCard, secondCard;
+  let matchedPairs = 0;
+  let photoOrderCorrect = false;
+  
+  // Elementos de audio
+  const backgroundMusic = document.getElementById('backgroundMusic');
+  const correctSound = document.getElementById('correctSound');
+  const wrongSound = document.getElementById('wrongSound');
+  const clickSound = document.getElementById('clickSound');
+  const confettiSound = document.getElementById('confettiSound');
+  
+  // Control de música
+  let musicPlaying = false;
+  const musicControl = document.getElementById('musicControl');
+  
+  // Crear corazones flotantes
+  function createHearts() {
+    const container = document.getElementById('hearts-container');
+    const heartCount = 20;
+    
+    for (let i = 0; i < heartCount; i++) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      
+      // Posición aleatoria
+      heart.style.left = `${Math.random() * 100}vw`;
+      heart.style.top = `${Math.random() * 100}vh`;
+      
+      // Tamaño aleatorio
+      const size = Math.random() * 20 + 10;
+      heart.style.width = `${size}px`;
+      heart.style.height = `${size}px`;
+      
+      // Animación diferente para cada corazón
+      heart.style.animationDuration = `${Math.random() * 3 + 3}s`;
+      heart.style.animationDelay = `${Math.random() * 2}s`;
+      
+      // Color aleatorio
+      const colors = ['#ff6b9e', '#4fc3f7', '#ffd166', '#a051f6'];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      heart.style.backgroundColor = randomColor;
+      
+      container.appendChild(heart);
+    }
+  }
+  
+  // Crear flores hawaianas
+  function createFlowers() {
+    const container = document.getElementById('flowers-container');
+    const flowerCount = 10;
+    const flowers = ['🌸', '🌺', '🌼', '🌻', '🏵️', '💮', '🌸', '🌺'];
+    
+    for (let i = 0; i < flowerCount; i++) {
+      const flower = document.createElement('div');
+      flower.classList.add('flor-hawai');
+      flower.textContent = flowers[i];
+      flower.setAttribute('aria-hidden', 'true');
+      
+      // Posición aleatoria
+      flower.style.left = `${Math.random() * 90 + 5}vw`;
+      flower.style.top = `${Math.random() * 90 + 5}vh`;
+      
+      // Tamaño aleatorio
+      flower.style.fontSize = `${Math.random() * 1 + 1.5}rem`;
+      
+      // Animación diferente para cada flor
+      flower.style.animationDuration = `${Math.random() * 20 + 10}s`;
+      flower.style.animationDelay = `${Math.random() * 5}s`;
+      
+      container.appendChild(flower);
+    }
+  }
+  
+  // Crear confeti
+  function createConfetti() {
+    const colors = ['#ff6b9e', '#4fc3f7', '#66bb6a', '#ffd166', '#a051f6'];
+    const container = document.body;
+    
+    // Reproducir sonido de confeti
+    confettiSound.currentTime = 0;
+    confettiSound.play().catch(e => console.log("Audio bloqueado:", e));
+    
+    for (let i = 0; i < 150; i++) {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      
+      // Forma aleatoria (cuadrado, círculo o corazón)
+      const shape = Math.random();
+      if (shape > 0.7) {
+        confetti.style.borderRadius = '50%';
+      } else if (shape > 0.4) {
+        // Corazón pequeño
+        confetti.innerHTML = '❤️';
+        confetti.style.fontSize = `${Math.random() * 10 + 10}px`;
+        confetti.style.background = 'transparent';
+      }
+      
+      // Posición aleatoria
+      confetti.style.left = `${Math.random() * 100}vw`;
+      confetti.style.top = '-10px';
+      
+      // Color aleatorio
+      confetti.style.color = confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      
+      // Tamaño aleatorio
+      const size = Math.random() * 15 + 5;
+      confetti.style.width = shape > 0.4 ? 'auto' : `${size}px`;
+      confetti.style.height = shape > 0.4 ? 'auto' : `${size}px`;
+      
+      // Animación
+      const duration = Math.random() * 3 + 2;
+      confetti.style.animation = `fall ${duration}s linear forwards`;
+      confetti.style.animationDelay = `${Math.random() * 2}s`;
+      
+      // Velocidad de caída y rotación aleatoria
+      const keyframes = `
+        @keyframes fall {
+          to {
+            transform: translateY(${window.innerHeight + 10}px) rotate(${Math.random() * 720}deg);
+            opacity: 0;
+          }
+        }
+      `;
+      
+      const style = document.createElement('style');
+      style.innerHTML = keyframes;
+      document.head.appendChild(style);
+      
+      container.appendChild(confetti);
+      
+      // Eliminar después de la animación
+      setTimeout(() => {
+        confetti.remove();
+      }, duration * 1000);
+    }
+  }
+  
+  // Seleccionar opción
+  function selectOption(element, questionId, value) {
+    // Reproducir sonido de clic
+    clickSound.currentTime = 0;
+    clickSound.play().catch(e => console.log("Audio bloqueado:", e));
+    
+    // Deseleccionar todas las opciones de esta pregunta
+    const container = element.parentElement;
+    const options = container.querySelectorAll('.option');
+    options.forEach(opt => {
+      opt.classList.remove('selected');
+      opt.setAttribute('aria-selected', 'false');
+    });
+    
+    // Seleccionar la opción clickeada
+    element.classList.add('selected');
+    element.setAttribute('aria-selected', 'true');
+    respuestas[questionId] = value;
+    
+    // Habilitar botón si todas las preguntas tienen respuesta
+    checkAllAnswers();
+  }
+  
+  // Verificar si todas las preguntas tienen respuesta
+  function checkAllAnswers() {
+    let allAnswered = true;
+    const currentStage = document.querySelector('.card:not(.hidden)').id;
+    
+    if (currentStage === 'etapa1') {
+      allAnswered = respuestas.q1 && respuestas.q2 && respuestas.q3;
+      document.getElementById('btn-etapa1').disabled = !allAnswered;
+      
+      // Actualizar barra de progreso
+      const answeredCount = [respuestas.q1, respuestas.q2, respuestas.q3].filter(Boolean).length;
+      document.getElementById('progressBar').style.width = `${(answeredCount / 3) * 100}%`;
+    } else if (currentStage === 'etapa2') {
+      allAnswered = respuestas.q4;
+      document.getElementById('btn-etapa2').disabled = !allAnswered;
+      
+      // Barra de progreso completa
+      document.getElementById('progressBar').style.width = '100%';
+    } else if (currentStage === 'etapa3') {
+      // Verificar si todas las parejas del juego de memoria están encontradas
+      allAnswered = matchedPairs === 4; // 4 parejas en total
+      document.getElementById('btn-etapa3').disabled = !allAnswered;
+    }
+  }
+  
+  function verificarEtapa1() {
+    const correctas = {
+      q1: 'nani',
+      q2: '626',
+      q3: 'kauai'
+    };
+    
+    let todasCorrectas = true;
+    
+    // Marcar respuestas correctas e incorrectas
+    for (const key in correctas) {
+      const correcta = correctas[key];
+      const seleccionada = respuestas[key];
+      const container = document.querySelector(`.option.selected[onclick*="${key}"]`)?.parentElement;
+      
+      if (container) {
+        const options = container.querySelectorAll('.option');
+        options.forEach(opt => {
+          const optValue = opt.getAttribute('onclick').split("'")[3];
+          if (optValue === correcta) {
+            opt.classList.add('correct');
+          } else if (optValue === seleccionada && seleccionada !== correcta) {
+            opt.classList.add('incorrect');
+            todasCorrectas = false;
+          }
+        });
+      }
+    }
+    
+    if (todasCorrectas) {
+      // Reproducir sonido correcto
+      correctSound.currentTime = 0;
+      correctSound.play().catch(e => console.log("Audio bloqueado:", e));
+      
+      document.getElementById('etapa1').classList.add('hidden');
+      document.getElementById('etapa2').classList.remove('hidden');
+      createConfetti();
+      
+      // Enfocar el primer elemento de la nueva etapa
+      setTimeout(() => {
+        document.querySelector('#etapa2 .option')?.focus();
+      }, 500);
+    } else {
+      // Reproducir sonido incorrecto
+      wrongSound.currentTime = 0;
+      wrongSound.play().catch(e => console.log("Audio bloqueado:", e));
+      
+      // Usar alerta estándar si SweetAlert no está disponible
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          title: '¡Ups!',
+          html: 'Algunas respuestas no son correctas, mi amor.<br>Las respuestas correctas están marcadas en verde.<br>¡Inténtalo de nuevo!',
+          icon: 'error',
+          confirmButtonText: 'Entendido',
+          background: '#fff0f5',
+          confirmButtonColor: '#ff6b9e',
+          customClass: {
+            popup: 'animated pulse'
+          }
+        });
+      } else {
+        alert('Algunas respuestas no son correctas. Las respuestas correctas están marcadas en verde.');
+      }
+    }
+  }
+
+  function verificarEtapa2() {
+    const correcta = 'ohana';
+    const seleccionada = respuestas.q4;
+    const container = document.querySelector(`.option.selected[onclick*="q4"]`)?.parentElement;
+    
+    if (container) {
+      const options = container.querySelectorAll('.option');
+      options.forEach(opt => {
+        const optValue = opt.getAttribute('onclick').split("'")[3];
+        if (optValue === correcta) {
+          opt.classList.add('correct');
+        } else if (optValue === seleccionada && seleccionada !== correcta) {
+          opt.classList.add('incorrect');
+        }
+      });
+    }
+    
+    if (seleccionada === correcta) {
+      // Reproducir sonido correcto
+      correctSound.currentTime = 0;
+      correctSound.play().catch(e => console.log("Audio bloqueado:", e));
+      
+      document.getElementById('etapa2').classList.add('hidden');
+      document.getElementById('etapa3').classList.remove('hidden');
+      createConfetti();
+      
+      // Configurar el juego de memoria
+      setupMemoryGame();
+    } else {
+      // Reproducir sonido incorrecto
+      wrongSound.currentTime = 0;
+      wrongSound.play().catch(e => console.log("Audio bloqueado:", e));
+      
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          title: 'Pista especial',
+          html: '"Ohana significa familia, y familia significa que nadie se queda atrás... o se olvida" 💙<br><br>La respuesta correcta está marcada en verde.',
+          icon: 'info',
+          confirmButtonText: 'Entendido',
+          background: '#fff0f5',
+          confirmButtonColor: '#4fc3f7',
+          customClass: {
+            popup: 'animated pulse'
+          }
+        });
+      } else {
+        alert('Respuesta incorrecta. La respuesta correcta está marcada en verde.');
+      }
+    }
+  }
+
+  // Configurar el juego de memoria
+  function setupMemoryGame() {
+    const memoryGame = document.getElementById('memoryGame');
+    memoryGame.innerHTML = '';
+    
+    // Imágenes relacionadas con tus momentos especiales
+    const images = [
+      { src: 'https://i.postimg.cc/NMs4mdRc/Whats-App-Image-2025-05-09-at-2-27-23-PM.jpg', alt: 'Nuestra primera cita en el Barrio Chino' },
+      { src: 'https://i.postimg.cc/T2L6D00m/Whats-App-Image-2025-05-09-at-2-24-53-PM.jpg', alt: 'Nuestro primer beso en el Malecón' },
+      { src: 'https://i.postimg.cc/8cKNNXmP/Whats-App-Image-2025-05-09-at-2-27-41-PM.jpg', alt: 'Noche de boliche' },
+      { src: 'https://i.postimg.cc/7h7nyjkS/Whats-App-Image-2025-05-09-at-2-27-32-PM.jpg', alt: 'Terminamos en un villar' }
+    ];
+    
+    // Duplicar las imágenes para hacer parejas
+    const cards = [...images, ...images];
+    
+    // Mezclar las cartas
+    cards.sort(() => Math.random() - 0.5);
+    
+    // Crear las cartas en el HTML
+    cards.forEach((card, index) => {
+      const memoryCard = document.createElement('div');
+      memoryCard.classList.add('memory-card');
+      memoryCard.dataset.image = card.src;
+      memoryCard.dataset.alt = card.alt;
+      memoryCard.dataset.index = index;
+      
+      memoryCard.innerHTML = `
+        <img src="${card.src}" alt="${card.alt}">
+        <div class="back"><i class="fas fa-heart" style="color: var(--rosa-principal);"></i></div>
+      `;
+      
+      memoryCard.addEventListener('click', flipCard);
+      memoryGame.appendChild(memoryCard);
+    });
+    
+    // Reiniciar variables del juego
+    memoryCards = document.querySelectorAll('.memory-card');
+    hasFlippedCard = false;
+    lockBoard = false;
+    firstCard = null;
+    secondCard = null;
+    matchedPairs = 0;
+    
+    // Deshabilitar botón hasta que se encuentren todas las parejas
+    document.getElementById('btn-etapa3').disabled = true;
+  }
+
+  // Función para voltear cartas en el juego de memoria
+  function flipCard() {
+    if (lockBoard) return;
+    if (this === firstCard) return;
+    
+    // Reproducir sonido de clic
+    clickSound.currentTime = 0;
+    clickSound.play().catch(e => console.log("Audio bloqueado:", e));
+    
+    this.classList.add('flipped');
+    
+    if (!hasFlippedCard) {
+      // Primera carta
+      hasFlippedCard = true;
+      firstCard = this;
+      return;
+    }
+    
+    // Segunda carta
+    secondCard = this;
+    checkForMatch();
+  }
+
+  // Verificar si las cartas coinciden
+  function checkForMatch() {
+    const isMatch = firstCard.dataset.image === secondCard.dataset.image;
+    
+    if (isMatch) {
+      // Reproducir sonido correcto
+      correctSound.currentTime = 0;
+      correctSound.play().catch(e => console.log("Audio bloqueado:", e));
+      
+      disableCards();
+      matchedPairs++;
+      
+      // Verificar si se encontraron todas las parejas
+      checkAllAnswers();
+    } else {
+      // Reproducir sonido incorrecto
+      wrongSound.currentTime = 0;
+      wrongSound.play().catch(e => console.log("Audio bloqueado:", e));
+      
+      unflipCards();
+    }
+  }
+
+  function disableCards() {
+    firstCard.removeEventListener('click', flipCard);
+    secondCard.removeEventListener('click', flipCard);
+    firstCard.classList.add('matched');
+    secondCard.classList.add('matched');
+    
+    resetBoard();
+  }
+
+  function unflipCards() {
+    lockBoard = true;
+    
+    setTimeout(() => {
+      firstCard.classList.remove('flipped');
+      secondCard.classList.remove('flipped');
+      
+      resetBoard();
+    }, 1000);
+  }
+
+  function resetBoard() {
+    [hasFlippedCard, lockBoard] = [false, false];
+    [firstCard, secondCard] = [null, null];
+  }
+
+  function verificarEtapa3() {
+    // Efecto de confeti
+    createConfetti();
+    
+    document.getElementById('etapa3').classList.add('hidden');
+    document.getElementById('etapa4').classList.remove('hidden');
+    
+    // Configurar el juego de arrastrar fotos
+    setupDragPhotosGame();
+  }
+
+  // Configurar el juego de arrastrar fotos
+  function setupDragPhotosGame() {
+    photoOrderCorrect = false;
+    
+    // Configurar eventos de arrastre para las fotos
+    const photos = document.querySelectorAll('.photo-option');
+    photos.forEach(photo => {
+      photo.addEventListener('dragstart', drag);
+    });
+    
+    // Configurar eventos para los objetivos
+    const targets = document.querySelectorAll('.photo-target');
+    targets.forEach(target => {
+      target.addEventListener('dragover', allowDrop);
+      target.addEventListener('drop', drop);
+      target.innerHTML = target.textContent; // Limpiar cualquier imagen previa
+    });
+  }
+
+  // Funciones para el juego de arrastrar fotos
+  function allowDrop(ev) {
+    ev.preventDefault();
+    this.classList.add('highlight');
+  }
+
+  function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.dataset.order);
+    // Reproducir sonido de clic
+    clickSound.currentTime = 0;
+    clickSound.play().catch(e => console.log("Audio bloqueado:", e));
+  }
+
+  function drop(ev) {
+    ev.preventDefault();
+    this.classList.remove('highlight');
+    
+    const data = ev.dataTransfer.getData("text");
+    const photo = document.querySelector(`.photo-option[data-order="${data}"]`);
+    
+    if (photo) {
+      // Crear una copia de la foto para colocar en el objetivo
+      const photoCopy = photo.cloneNode(true);
+      photoCopy.style.cursor = 'default';
+      photoCopy.draggable = false;
+      
+      // Limpiar el objetivo y agregar la foto
+      this.innerHTML = '';
+      this.appendChild(photoCopy);
+      
+      // Reproducir sonido de colocación
+      clickSound.currentTime = 0;
+      clickSound.volume = 0.3;
+      clickSound.play().catch(e => console.log("Audio bloqueado:", e));
+    }
+  }
+
+  function verificarEtapa4() {
+    // Verificar el orden de las fotos
+    const targets = document.querySelectorAll('.photo-target');
+    let correctOrder = true;
+    
+    targets.forEach((target, index) => {
+      const img = target.querySelector('img');
+      if (!img || parseInt(img.dataset.order) !== index + 1) {
+        correctOrder = false;
+      }
+    });
+    
+    if (correctOrder) {
+      // Reproducir sonido correcto
+      correctSound.currentTime = 0;
+      correctSound.play().catch(e => console.log("Audio bloqueado:", e));
+      
+      photoOrderCorrect = true;
+      createConfetti();
+      
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          title: '¡Correcto!',
+          text: 'Has ordenado perfectamente nuestros recuerdos especiales.',
+          icon: 'success',
+          confirmButtonText: 'Continuar',
+          background: '#fff0f5',
+          confirmButtonColor: '#66bb6a',
+          customClass: {
+            popup: 'animated pulse'
+          }
+        }).then(() => {
+          document.getElementById('etapa4').classList.add('hidden');
+          document.getElementById('etapa5').classList.remove('hidden');
+          setupPuzzle();
+        });
+      } else {
+        document.getElementById('etapa4').classList.add('hidden');
+        document.getElementById('etapa5').classList.remove('hidden');
+        setupPuzzle();
+      }
+    } else {
+      // Reproducir sonido incorrecto
+      wrongSound.currentTime = 0;
+      wrongSound.play().catch(e => console.log("Audio bloqueado:", e));
+      
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          title: '¡Ups!',
+          text: 'El orden no es correcto. Inténtalo de nuevo.',
+          icon: 'error',
+          confirmButtonText: 'Entendido',
+          background: '#fff0f5',
+          confirmButtonColor: '#ff6b9e',
+          customClass: {
+            popup: 'animated pulse'
+          }
+        });
+      } else {
+        alert('El orden no es correcto. Inténtalo de nuevo.');
+      }
+    }
+  }
+
+  // Configurar el rompecabezas
+  function setupPuzzle() {
+    const puzzleContainer = document.getElementById('puzzle-container');
+    const pieces = Array.from(puzzleContainer.children);
+    
+    // Mezclar las piezas
+    pieces.sort(() => Math.random() - 0.5);
+    puzzleContainer.innerHTML = '';
+    pieces.forEach(piece => puzzleContainer.appendChild(piece));
+    
+    // Configurar eventos de arrastre
+    setupDragAndDrop();
+    
+    // Mostrar pista
+    const hint = document.getElementById('puzzle-hint');
+    hint.style.opacity = '1';
+    setTimeout(() => {
+      hint.style.opacity = '0.5';
+    }, 3000);
+  }
+
+  // Configurar arrastrar y soltar
+  function setupDragAndDrop() {
+    const puzzlePieces = document.querySelectorAll('.puzzle-img');
+    let draggedPiece = null;
+
+    puzzlePieces.forEach(piece => {
+      piece.addEventListener('dragstart', function(e) {
+        draggedPiece = this;
+        setTimeout(() => this.style.opacity = '0.5', 0);
+        e.dataTransfer.setData('text/plain', this.id);
+        // Reproducir sonido de clic
+        clickSound.currentTime = 0;
+        clickSound.play().catch(e => console.log("Audio bloqueado:", e));
+      });
+
+      piece.addEventListener('dragend', function() {
+        setTimeout(() => this.style.opacity = '1', 0);
+      });
+
+      piece.addEventListener('dragover', function(e) {
+        e.preventDefault();
+      });
+
+      piece.addEventListener('dragenter', function(e) {
+        e.preventDefault();
+        this.style.transform = 'scale(1.1)';
+      });
+
+      piece.addEventListener('dragleave', function() {
+        this.style.transform = 'scale(1)';
+      });
+
+      piece.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.style.transform = 'scale(1)';
+        if (draggedPiece !== this) {
+          // Intercambiar imágenes
+          const tempSrc = this.src;
+          const tempId = this.id;
+          
+          this.src = draggedPiece.src;
+          this.id = draggedPiece.id;
+          
+          draggedPiece.src = tempSrc;
+          draggedPiece.id = tempId;
+          
+          // Reproducir sonido de colocación
+          clickSound.currentTime = 0;
+          clickSound.volume = 0.3;
+          clickSound.play().catch(e => console.log("Audio bloqueado:", e));
+        }
+      });
+    });
+  }
+
+  function finalizarRompecabezas() {
+    // Efecto de confeti
+    createConfetti();
+    
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        title: '¡Perfecto!',
+        text: 'Nuestro amor completa cualquier rompecabezas, incluso cuando las piezas no encajan perfectamente.',
+        icon: 'success',
+        confirmButtonText: 'Continuar',
+        background: '#fff0f5',
+        confirmButtonColor: '#66bb6a',
+        customClass: {
+          popup: 'animated pulse'
+        }
+      }).then(() => {
+        document.getElementById('etapa5').classList.add('hidden');
+        document.getElementById('etapa6').classList.remove('hidden');
+      });
+    } else {
+      document.getElementById('etapa5').classList.add('hidden');
+      document.getElementById('etapa6').classList.remove('hidden');
+          }
+  }
+
+  function verificarQuizPersonal() {
+    const respuestasCorrectas = {
+      quiz1: "barrio chino",
+      quiz2: "malecón",
+      quiz3: "boliche"
+    };
+    
+    let todasCorrectas = true;
+    
+    // Verificar cada respuesta
+    for (const key in respuestasCorrectas) {
+      const respuestaUsuario = document.getElementById(key).value.toLowerCase().trim();
+      if (respuestaUsuario !== respuestasCorrectas[key]) {
+        todasCorrectas = false;
+        document.getElementById(key).style.borderColor = "#ef9a9a";
+      } else {
+        document.getElementById(key).style.borderColor = "#66bb6a";
+      }
+    }
+    
+    if (todasCorrectas) {
+      // Reproducir sonido correcto
+      correctSound.currentTime = 0;
+      correctSound.play().catch(e => console.log("Audio bloqueado:", e));
+      
+      createConfetti();
+      
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          title: '¡Increíble!',
+          html: '¡Conoces cada detalle de nuestra historia de amor!<br><br>Ahora prepárate para la sorpresa final...',
+          icon: 'success',
+          confirmButtonText: 'Ver sorpresa',
+          background: '#fff0f5',
+          confirmButtonColor: '#a051f6',
+          customClass: {
+            popup: 'animated pulse'
+          }
+        }).then(() => {
+          document.getElementById('etapa6').classList.add('hidden');
+          document.getElementById('final').classList.remove('hidden');
+          playFinalVideo();
+        });
+      } else {
+        document.getElementById('etapa6').classList.add('hidden');
+        document.getElementById('final').classList.remove('hidden');
+        playFinalVideo();
+      }
+    } else {
+      // Reproducir sonido incorrecto
+      wrongSound.currentTime = 0;
+      wrongSound.play().catch(e => console.log("Audio bloqueado:", e));
+      
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          title: '¡Casi!',
+          text: 'Algunas respuestas no son correctas. Las respuestas correctas están marcadas en verde.',
+          icon: 'error',
+          confirmButtonText: 'Entendido',
+          background: '#fff0f5',
+          confirmButtonColor: '#ff6b9e',
+          customClass: {
+            popup: 'animated pulse'
+          }
+        });
+      } else {
+        alert('Algunas respuestas no son correctas. Las respuestas correctas están marcadas en verde.');
+      }
+    }
+  }
+
+  function playFinalVideo() {
+    const video = document.getElementById('video-mensaje');
+    
+    // Intentar reproducir el video automáticamente (puede ser bloqueado por el navegador)
+    const promise = video.play();
+    
+    if (promise !== undefined) {
+      promise.catch(error => {
+        // Mostrar controles si la reproducción automática falla
+        video.controls = true;
+      });
+    }
+    
+    // Crear más confeti
+    setTimeout(createConfetti, 2000);
+    setTimeout(createConfetti, 4000);
+  }
+
+  function reiniciarAventura() {
+    // Reproducir sonido de clic
+    clickSound.currentTime = 0;
+    clickSound.play().catch(e => console.log("Audio bloqueado:", e));
+    
+    // Ocultar todas las etapas excepto la primera
+    document.querySelectorAll('.card').forEach(card => {
+      card.classList.add('hidden');
+    });
+    document.getElementById('etapa1').classList.remove('hidden');
+    
+    // Reiniciar respuestas
+    for (const key in respuestas) {
+      respuestas[key] = null;
+    }
+    
+    // Reiniciar selecciones
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.classList.remove('selected', 'correct', 'incorrect');
+      opt.setAttribute('aria-selected', 'false');
+    });
+    
+    // Reiniciar barra de progreso
+    document.getElementById('progressBar').style.width = '0%';
+    
+    // Desplazarse al inicio
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Reiniciar botones
+    document.getElementById('btn-etapa1').disabled = true;
+    document.getElementById('btn-etapa2').disabled = true;
+  }
+
+  // Control de música
+  musicControl.addEventListener('click', function() {
+    if (musicPlaying) {
+      backgroundMusic.pause();
+      musicControl.innerHTML = '<i class="fas fa-music"></i>';
+      musicPlaying = false;
+    } else {
+      backgroundMusic.play().catch(e => console.log("Audio bloqueado:", e));
+      musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+      musicPlaying = true;
+    }
+    
+    // Reproducir sonido de clic
+    clickSound.currentTime = 0;
+    clickSound.play().catch(e => console.log("Audio bloqueado:", e));
+  });
+
+  // Manejar eventos de teclado para accesibilidad
+  function handleKeyDown(event, element, questionId, value) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      selectOption(element, questionId, value);
+    }
+  }
+
+  // Zoom en imágenes de la galería
+  function zoomImage(img) {
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        imageUrl: img.src,
+        imageAlt: img.alt,
+        showConfirmButton: false,
+        background: 'transparent',
+        backdrop: `
+          rgba(255,192,203,0.8)
+          url("https://i.pinimg.com/originals/9f/1e/5c/9f1e5c7f0d8a8b8e8e8e8e8e8e8e8e8e.jpg")
+          center top
+          no-repeat
+        `,
+        customClass: {
+          popup: 'no-border'
+        }
+      });
+    } else {
+      // Alternativa simple si SweetAlert no está disponible
+      const modal = document.createElement('div');
+      modal.style.position = 'fixed';
+      modal.style.top = '0';
+      modal.style.left = '0';
+      modal.style.width = '100%';
+      modal.style.height = '100%';
+      modal.style.backgroundColor = 'rgba(0,0,0,0.8)';
+      modal.style.display = 'flex';
+      modal.style.alignItems = 'center';
+      modal.style.justifyContent = 'center';
+      modal.style.zIndex = '1000';
+      
+      const modalImg = document.createElement('img');
+      modalImg.src = img.src;
+      modalImg.alt = img.alt;
+      modalImg.style.maxWidth = '90%';
+      modalImg.style.maxHeight = '90%';
+      modalImg.style.borderRadius = '15px';
+      
+      modal.appendChild(modalImg);
+      modal.addEventListener('click', () => modal.remove());
+      
+      document.body.appendChild(modal);
+    }
+    
+    // Reproducir sonido de clic
+    clickSound.currentTime = 0;
+    clickSound.play().catch(e => console.log("Audio bloqueado:", e));
+  }
+
+  // Inicialización
+  document.addEventListener('DOMContentLoaded', function() {
+    createHearts();
+    createFlowers();
+    
+    // Configurar tooltips para accesibilidad
+    document.querySelectorAll('[aria-label]').forEach(el => {
+      el.setAttribute('title', el.getAttribute('aria-label'));
+    });
+    
+    // Intentar reproducir música automáticamente (puede ser bloqueado por el navegador)
+    const musicPromise = backgroundMusic.play();
+    
+    if (musicPromise !== undefined) {
+      musicPromise.catch(error => {
+        // Mostrar controles si la reproducción automática falla
+        musicControl.innerHTML = '<i class="fas fa-music"></i>';
+        musicPlaying = false;
+      }).then(() => {
+        musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+        musicPlaying = true;
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
